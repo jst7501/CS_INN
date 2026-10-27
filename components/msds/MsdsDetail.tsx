@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {
   Ban,
@@ -29,10 +29,26 @@ function stripDecoration(text: string) {
   return text.replace(/^[^\p{L}\p{N}(]+/u, "").trim();
 }
 
+/** 문장 앞에 붙은 이모지 제거 (데이터는 그대로 두고 화면 표시용으로만) */
+function stripEmoji<T>(value: T): T {
+  if (typeof value === "string") {
+    return value
+      .replace(/^[\s\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F\u200D]+/u, "")
+      .trim() as T;
+  }
+  if (Array.isArray(value)) return value.map(stripEmoji) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([k, v]) => [k, stripEmoji(v)]),
+    ) as T;
+  }
+  return value;
+}
+
 export default function MsdsDetail({ chemical }: { chemical: ChemicalEntry }) {
   const { lang } = useLanguage();
   const ui = useUiText();
-  const t = chemical.data[lang];
+  const t = useMemo(() => stripEmoji(chemical.data[lang]), [chemical, lang]);
   const c = t.content;
 
   const [open, setOpen] = useState<Set<number>>(() => new Set());
