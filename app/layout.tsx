@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${notoSansKr.variable} ${notoSans.variable} ${notoSansKh.variable} ${notoSansMm.variable} bg-slate-100 text-slate-900 min-h-screen font-kr antialiased`}
+        className={`${notoSansKr.variable} ${notoSans.variable} ${notoSansKh.variable} ${notoSansMm.variable} bg-white text-ink min-h-screen font-kr antialiased`}
       >
         <LanguageProvider>
           <Header />

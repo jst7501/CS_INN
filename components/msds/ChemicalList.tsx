@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Search, X } from "lucide-react";
 import type { ChemicalCategory, ChemicalSummary } from "@/data/msds/types";
-import { GhsDiamond } from "./Pictograms";
 import { SignalBadge } from "./SignalBadge";
 import { fontClass, useLanguage, useUiText } from "./LanguageProvider";
 
@@ -50,71 +49,70 @@ export default function ChemicalList({ items }: { items: ChemicalSummary[] }) {
   }, [items, query, category]);
 
   return (
-    <div className={`px-4 pt-8 pb-16 mx-auto max-w-7xl md:px-8 ${fontClass(lang)}`}>
-      <section className="mb-8">
-        <p className="mb-2 text-xs font-bold tracking-widest text-red-600 uppercase">
-          MSDS · {ui.count(items.length)}
-        </p>
-        <h1 className="text-3xl font-black tracking-tight md:text-4xl text-slate-900">
+    <div className={`mx-auto max-w-[480px] pb-16 ${fontClass(lang)}`}>
+      <section className="px-5 pt-6 pb-5">
+        <h1 className="text-[26px] font-bold leading-snug tracking-tight text-ink">
           {ui.title}
         </h1>
-        <p className="mt-2 text-slate-600">{ui.subtitle}</p>
+        <p className="mt-1.5 text-[15px] leading-relaxed text-sub whitespace-pre-line">
+          {ui.subtitle}
+        </p>
       </section>
 
-      {/* 검색 + 분류 필터 */}
-      <div className="flex flex-col gap-3 mb-6 md:flex-row md:items-center">
-        <div className="relative flex-1">
+      {/* 검색 */}
+      <div className="px-5">
+        <div className="relative">
           <Search
             size={18}
-            className="absolute -translate-y-1/2 pointer-events-none left-4 top-1/2 text-slate-400"
+            className="absolute -translate-y-1/2 pointer-events-none left-4 top-1/2 text-mute"
           />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={ui.search}
-            className="w-full h-12 pl-11 pr-10 bg-white border shadow-sm outline-none rounded-xl border-slate-200 placeholder:text-slate-400 focus:border-slate-400 focus:ring-4 focus:ring-slate-900/5"
+            className="w-full h-12 pl-11 pr-10 text-[15px] outline-none rounded-2xl bg-fill text-ink placeholder:text-mute"
           />
           {query && (
             <button
               onClick={() => setQuery("")}
               aria-label="clear"
-              className="absolute p-1 -translate-y-1/2 rounded-full right-3 top-1/2 text-slate-400 hover:bg-slate-100"
+              className="absolute flex items-center justify-center w-5 h-5 -translate-y-1/2 rounded-full right-4 top-1/2 bg-mute text-white"
             >
-              <X size={16} />
+              <X size={12} strokeWidth={3} />
             </button>
           )}
         </div>
-        {categories.length > 1 && (
-          <div className="flex gap-2 overflow-x-auto no-scrollbar">
-            {(["all", ...categories] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setCategory(c)}
-                className={`h-10 px-4 rounded-full text-sm font-bold whitespace-nowrap border transition-colors ${
-                  category === c
-                    ? "bg-slate-900 text-white border-slate-900"
-                    : "bg-white text-slate-600 border-slate-200 hover:border-slate-400"
-                }`}
-              >
-                {c === "all"
-                  ? ui.all
-                  : categoryLabels[c][lang === "ko" ? "ko" : "en"]}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
-      {filtered.length === 0 ? (
-        <div className="py-20 text-center bg-white border border-dashed rounded-2xl border-slate-300 text-slate-500">
-          {ui.empty}
+      {/* 분류 */}
+      {categories.length > 1 && (
+        <div className="flex gap-2 px-5 mt-3 overflow-x-auto no-scrollbar">
+          {(["all", ...categories] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              className={`h-9 px-4 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+                category === c ? "bg-ink text-white" : "bg-fill text-sub"
+              }`}
+            >
+              {c === "all" ? ui.all : categoryLabels[c][lang === "ko" ? "ko" : "en"]}
+            </button>
+          ))}
         </div>
+      )}
+
+      <p className="px-5 mt-7 mb-1 text-[13px] font-semibold text-mute">
+        {ui.count(filtered.length)}
+      </p>
+
+      {filtered.length === 0 ? (
+        <p className="px-5 py-16 text-center text-[15px] text-mute">{ui.empty}</p>
       ) : (
-        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul>
           {filtered.map((item) => (
             <li key={item.id}>
-              <ChemicalCard item={item} />
+              <ChemicalRow item={item} />
             </li>
           ))}
         </ul>
@@ -123,52 +121,32 @@ export default function ChemicalList({ items }: { items: ChemicalSummary[] }) {
   );
 }
 
-function ChemicalCard({ item }: { item: ChemicalSummary }) {
+function ChemicalRow({ item }: { item: ChemicalSummary }) {
   const { lang } = useLanguage();
 
   return (
     <Link
       href={`/msds/${item.id}`}
-      className="relative flex flex-col h-full p-5 overflow-hidden transition bg-white border shadow-sm group rounded-2xl border-slate-200 hover:shadow-lg hover:-translate-y-0.5 hover:border-slate-300"
+      className="flex items-center gap-4 px-5 py-3.5 transition-colors active:bg-fill"
     >
-      <span
-        className="absolute inset-x-0 top-0 h-1.5"
-        style={{ background: item.accent }}
-      />
-
-      <div className="flex items-start justify-between gap-3">
-        <div
-          className="flex items-center justify-center px-3 h-14 min-w-14 rounded-xl text-lg font-black tracking-tight"
-          style={{ background: `${item.accent}14`, color: item.accent }}
-        >
-          {item.formula}
-        </div>
-        <SignalBadge level={item.signal} />
+      <div
+        className="flex items-center justify-center w-12 h-12 text-[13px] font-bold tracking-tight rounded-2xl shrink-0"
+        style={{ background: `${item.accent}1a`, color: item.accent }}
+      >
+        {item.formula}
       </div>
 
-      <h2 className="mt-4 text-xl font-black leading-snug text-slate-900">
-        {item.names[lang]}
-      </h2>
-      <p className="text-sm font-medium text-slate-500">{item.nameEn}</p>
-
-      <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 mt-3 text-xs text-slate-500">
-        <dt className="font-bold">CAS</dt>
-        <dd className="font-mono">{item.cas}</dd>
-        <dt className="font-bold">MSDS</dt>
-        <dd className="font-mono truncate">{item.msdsNo}</dd>
-      </dl>
-
-      <div className="flex items-end justify-between pt-4 mt-auto">
-        <div className="flex -ml-1">
-          {item.ghs.map((g) => (
-            <GhsDiamond key={g} type={g} size={40} />
-          ))}
-        </div>
-        <ChevronRight
-          className="transition text-slate-300 group-hover:text-slate-700 group-hover:translate-x-0.5"
-          size={22}
-        />
+      <div className="flex-1 min-w-0">
+        <p className="text-[17px] font-semibold truncate text-ink">
+          {item.names[lang]}
+        </p>
+        <p className="text-[14px] truncate text-mute">
+          {item.nameEn} · CAS {item.cas.split(",")[0]}
+        </p>
       </div>
+
+      <SignalBadge level={item.signal} />
+      <ChevronRight size={18} className="-ml-1 shrink-0 text-line" />
     </Link>
   );
 }

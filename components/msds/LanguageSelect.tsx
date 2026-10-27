@@ -1,6 +1,6 @@
 "use client";
 
-import { Languages } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
 import { supportedLanguages, type LangCode } from "@/data/msds/types";
 import { useLanguage } from "./LanguageProvider";
 
@@ -8,13 +8,13 @@ export default function LanguageSelect() {
   const { lang, setLang } = useLanguage();
 
   return (
-    <label className="relative flex items-center gap-2 h-10 pl-3 pr-2 rounded-full border border-slate-200 bg-white hover:border-slate-300 focus-within:ring-2 focus-within:ring-slate-900/10">
-      <Languages size={18} className="text-slate-500 shrink-0" />
+    <label className="relative flex items-center h-9 gap-1.5 pl-3 pr-2.5 rounded-full bg-fill">
+      <Globe size={15} className="text-sub shrink-0" />
       <span className="sr-only">Language</span>
       <select
         value={lang}
         onChange={(e) => setLang(e.target.value as LangCode)}
-        className="h-full pr-1 text-sm font-bold bg-transparent outline-none cursor-pointer text-slate-800 font-kr"
+        className="h-full pr-4 text-sm font-semibold bg-transparent outline-none appearance-none cursor-pointer text-sub font-kr"
       >
         {supportedLanguages.map((l) => (
           <option key={l.code} value={l.code}>
@@ -22,6 +22,10 @@ export default function LanguageSelect() {
           </option>
         ))}
       </select>
+      <ChevronDown
+        size={14}
+        className="absolute pointer-events-none right-2.5 text-mute"
+      />
     </label>
   );
 }

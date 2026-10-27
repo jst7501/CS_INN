@@ -5,23 +5,18 @@ import LanguageSelect from "@/components/msds/LanguageSelect";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b no-print bg-white/90 backdrop-blur border-slate-200">
-      <div className="flex items-center justify-between h-16 gap-3 px-4 mx-auto max-w-7xl md:px-8">
-        <Link href="/" className="flex items-center min-w-0 gap-3">
+    <header className="sticky top-0 z-40 bg-white">
+      <div className="flex items-center justify-between h-14 gap-3 px-5 mx-auto max-w-[480px]">
+        <Link href="/" className="flex items-center min-w-0 gap-2">
           <Image
             src={logo}
             alt="(주)씨에스이노베이션 로고"
-            className="w-10 h-10 shrink-0"
+            className="w-7 h-7 shrink-0"
             priority
           />
-          <div className="flex flex-col min-w-0">
-            <span className="text-[15px] font-black leading-tight tracking-tight truncate md:text-lg text-slate-900">
-              (주) 씨에스이노베이션
-            </span>
-            <span className="hidden sm:block text-[10px] font-bold tracking-wider text-slate-500 truncate">
-              CS INNOVATION · SAFETY MANAGEMENT
-            </span>
-          </div>
+          <span className="text-[15px] font-bold truncate text-ink">
+            씨에스이노베이션
+          </span>
         </Link>
 
         <LanguageSelect />

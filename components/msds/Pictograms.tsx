@@ -85,7 +85,7 @@ export function GhsDiamond({
         </div>
       </div>
       {showLabel && (
-        <figcaption className="text-[11px] font-bold text-center leading-tight text-slate-600">
+        <figcaption className="text-[12px] font-medium text-center leading-tight text-sub">
           {label}
         </figcaption>
       )}

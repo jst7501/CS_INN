@@ -9,19 +9,25 @@
   --font-kh: var(--font-noto-kh), var(--font-noto-kr), sans-serif;
 }
 
+/* 토스 스타일 팔레트 */
+@theme {
+  --color-ink: #191f28;
+  --color-sub: #4e5968;
+  --color-mute: #8b95a1;
+  --color-fill: #f2f4f6;
+  --color-line: #e5e8eb;
+  --color-brand: #3182f6;
+  --color-danger: #f04452;
+}
+
 html {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* 고정 헤더 + 섹션 바로가기 바 높이만큼 앵커 위치 보정 */
 [data-section] {
-  scroll-margin-top: 8.5rem;
-}
-
-@media (min-width: 1024px) {
-  [data-section] {
-    scroll-margin-top: 5.5rem;
-  }
+  scroll-margin-top: 7.5rem;
 }
 
 .no-scrollbar {
@@ -29,13 +35,4 @@ html {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
-}
-
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  [data-body] {
-    display: block !important;
-  }
 }
