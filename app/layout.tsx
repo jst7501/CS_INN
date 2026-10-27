@@ -1,28 +1,36 @@
 import type { Metadata } from "next";
-// 1. 필요한 폰트들을 가져옵니다.
 import {
+  Noto_Sans,
   Noto_Sans_KR,
   Noto_Sans_Khmer,
   Noto_Sans_Myanmar,
 } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
+import { LanguageProvider } from "@/components/msds/LanguageProvider";
 
-// 2. 한국어 폰트 설정
+// 한국어
 const notoSansKr = Noto_Sans_KR({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"],
-  variable: "--font-noto-kr", // CSS 변수로 사용할 이름
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-noto-kr",
 });
 
-// 3. 캄보디아어(Khmer) 폰트 설정
+// 베트남어·우즈베크어 (라틴 확장 + 베트남어 성조 기호)
+const notoSans = Noto_Sans({
+  subsets: ["latin", "latin-ext", "vietnamese"],
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-noto-latin",
+});
+
+// 캄보디아어(Khmer)
 const notoSansKh = Noto_Sans_Khmer({
   subsets: ["khmer"],
   weight: ["400", "700"],
   variable: "--font-noto-kh",
 });
 
-// 4. 미얀마어(Myanmar) 폰트 설정
+// 미얀마어(Myanmar)
 const notoSansMm = Noto_Sans_Myanmar({
   subsets: ["myanmar"],
   weight: ["400", "700"],
@@ -41,12 +49,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      {/* 5. body 태그에 폰트 변수들을 모두 넣어줍니다 */}
       <body
-        className={`${notoSansKr.variable} ${notoSansKh.variable} ${notoSansMm.variable} bg-slate-50 min-h-screen font-kr`}
+        className={`${notoSansKr.variable} ${notoSans.variable} ${notoSansKh.variable} ${notoSansMm.variable} bg-slate-100 text-slate-900 min-h-screen font-kr antialiased`}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
+        <LanguageProvider>
+          <Header />
+          <main>{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

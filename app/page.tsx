@@ -1,9 +1,6 @@
-import ChemicalDetail from "@/components/chemicals/NitricAcidDetail";
+import ChemicalList from "@/components/msds/ChemicalList";
+import { getSummaries } from "@/data/msds";
 
 export default function Home() {
-  return (
-    <div className="w-full">
-      <ChemicalDetail />
-    </div>
-  );
+  return <ChemicalList items={getSummaries()} />;
 }

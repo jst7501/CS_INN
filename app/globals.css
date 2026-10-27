@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+@theme inline {
+  --font-kr: var(--font-noto-kr), var(--font-noto-latin), var(--font-noto-mm),
+    var(--font-noto-kh), sans-serif;
+  --font-vn: var(--font-noto-latin), var(--font-noto-kr), sans-serif;
+  --font-uz: var(--font-noto-latin), var(--font-noto-kr), sans-serif;
+  --font-mm: var(--font-noto-mm), var(--font-noto-kr), sans-serif;
+  --font-kh: var(--font-noto-kh), var(--font-noto-kr), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* 고정 헤더 + 섹션 바로가기 바 높이만큼 앵커 위치 보정 */
+[data-section] {
+  scroll-margin-top: 8.5rem;
+}
+
+@media (min-width: 1024px) {
+  [data-section] {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  [data-body] {
+    display: block !important;
+  }
+}
